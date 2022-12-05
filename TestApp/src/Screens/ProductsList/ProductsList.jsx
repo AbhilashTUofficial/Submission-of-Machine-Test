@@ -1,9 +1,24 @@
 import { View, Text, StyleSheet, FlatList } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Product from '../../Components/ProductsList/Product';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import GetDataFromLocal from '../../util/GetDataFromLocal';
+import { loadLocalData } from '../../Redux/productsSlice';
 
 const ProductsList = () => {
+
+  const dispatch = useDispatch();
+
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  getData = async () => {
+    GetDataFromLocal().then((result) => dispatch(loadLocalData(result)));
+
+  };
+
 
   const data = useSelector((state) => state.data);
 

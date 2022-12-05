@@ -1,18 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { products } from '../data/productList';
+import { useEffect } from 'react';
+import GetDataFromLocal from '../util/GetDataFromLocal';
+import PutDataToLocal from '../util/PutDataToLocal';
+// import { products } from '../data/productList';
+
 
 const productsSlice = createSlice({
     name: 'productReducer',
-    initialState: products,
-    // {
-    //     id: '',
-    //     name: '',
-    //     image: [],
-    //     description: '',
-    //     amount: '',
-    //     ratings: [],
-    // },
+    initialState: [],
+
     reducers: {
+
+        loadLocalData: (state, action) => {
+            console.log("loading");
+            action.payload.map((product) => {
+                state.push(product);
+            });
+        },
 
 
         addRating: (state, action) => {
@@ -22,16 +26,20 @@ const productsSlice = createSlice({
                 phNumber: action.payload.phInput,
                 rating: action.payload.rating
             });
+            PutDataToLocal(state);
+
         },
         addProduct: (state, action) => {
+            console.log(state);
             state.push({
-                id: Math.random(0, 100),
+                id: Math.random(10, 100),
                 name: action.payload.name,
                 amount: action.payload.amount,
                 description: action.payload.description,
                 image: action.payload.imgUri,
                 ratings: []
             });
+            PutDataToLocal(state);
         }
 
 
@@ -40,7 +48,8 @@ const productsSlice = createSlice({
 
 export const {
     addRating,
-    addProduct
+    addProduct,
+    loadLocalData,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;

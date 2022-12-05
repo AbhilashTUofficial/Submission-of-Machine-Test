@@ -18,6 +18,7 @@ const AddProduct = () => {
 
 
     const addProductHandler = () => {
+        console.log(imgUri);
 
         if (name === "" || amount === "" || description === "") {
 
@@ -41,8 +42,9 @@ const AddProduct = () => {
             noData: true,
         };
         launchImageLibrary(options, response => {
-            setImgUri(uri => [...uri, response.assets[0].uri]);
-
+            if (!response.didCancel) {
+                setImgUri(uri => [...uri, response.assets[0].uri]);
+            }
         });
     };
 
